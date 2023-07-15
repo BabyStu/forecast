@@ -1,0 +1,16 @@
+
+
+
+.card {
+    border: 1px solid black;
+    margin: 1rem;
+  }
+
+.dark {
+    background-color: darkblue;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+
