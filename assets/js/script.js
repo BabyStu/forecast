@@ -1,7 +1,8 @@
 // var resultTextEl = document.querySelector('#result-content');
 var searchFormEl = document.querySelector('#search-form');
 var searchInputEl = document.querySelector('#search-input');
-var resultContentEl = document.querySelector('#result-content');
+var fiveDayWeatherBox = document.querySelector('#five-day-weather');
+var todayWeatherBox = document.querySelector('#today-weather');
 
 let lon;
 let lat;
@@ -24,17 +25,18 @@ function getCoordinates() {
             console.log(data)
 
             getForecast(data.coord);
+            printToday(data);
             
     });
 }
 
-function getForecast(coord) {
+function getForecast(coordinates) {
     var locQueryUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=';
 
-    console.log('Latitude:', coord.lat);
-    console.log('Longitude:', coord.lon);
+    console.log('Latitude:', coordinates.lat);
+    console.log('Longitude:', coordinates.lon);
 
-    locQueryUrl = locQueryUrl + coord.lat + '&lon=' + coord.lon + '&appid=' + apiKey;
+    locQueryUrl = locQueryUrl + coordinates.lat + '&lon=' + coordinates.lon + '&appid=' + apiKey;
 
     fetch(locQueryUrl)
         .then(function (response) {
@@ -45,34 +47,121 @@ function getForecast(coord) {
         .then(function (weather) {
             console.log(weather)
             
-            var wind = weather.list[0].wind.speed;
-            
-            console.log(weather.city.name, weather.list[0].wind.speed, wind)
-            
-            printResults(weather);
+            printFiveDay(weather);
         });
     
 }
 
-function printResults(fiveDays) {
+function printToday(today){
+    console.log(today)
+
+    var todayWeather = [today.wind.speed, today.main.temp, today.main.humidity];
+
+    var todayCard = createTodayCard(todayWeather);
+
+    console.log(todayWeather)
+    
+
+    todayWeatherBox.appendChild(todayCard);
+}
+
+
+function printFiveDay(fiveDays) {
 
     var city = fiveDays.city.name;
+    console.log(fiveDays.list[0])
 
-    var dayOne = fiveDays.list[0];
-    var dayTwo = fiveDays.list[8];
-    var dayThree = fiveDays.list[16];
-    var dayFour = fiveDays.list[24];
-    var dayFive = fiveDays.list[32];
+    var dayOne = fiveDays.list[4];
+    var dayTwo = fiveDays.list[12];
+    var dayThree = fiveDays.list[20];
+    var dayFour = fiveDays.list[28];
+    var dayFive = fiveDays.list[36];
 
-    var dayOneCard = createDayCard(dayOne);
-    var dayTwoCard = createDayCard(dayTwo);
-    var dayThreeCard = createDayCard(dayThree);
-    var dayFourCard = createDayCard(dayFour);
-    var dayFiveCard = createDayCard(dayFive);
+    dayOne = [dayOne.dt_txt, dayOne.wind.speed, dayOne.main.temp, dayOne.main.humidity];
+    dayTwo = [dayTwo.dt_txt, dayTwo.wind.speed, dayTwo.main.temp, dayTwo.main.humidity];
+    dayThree = [dayThree.dt_txt, dayThree.wind.speed, dayThree.main.temp, dayThree.main.humidity];
+    dayFour = [dayFour.dt_txt, dayFour.wind.speed, dayFour.main.temp, dayFour.main.humidity];
+    dayFive = [dayFive.dt_txt, dayFive.wind.speed, dayFive.main.temp, dayFive.main.humidity];
 
-    // var dayCard = document.createElement('div'); 
+    var day1 = createDayCard(dayOne);
+    var day2 = createDayCard(dayTwo);
+    var day3 = createDayCard(dayThree);
+    var day4 = createDayCard(dayFour);
+    var day5 = createDayCard(dayFive);
+    var header = "5 day forecast";
 
+    var heading = document.createElement('h2');
+    heading.textContent = header;
+
+    fiveDayWeatherBox.appendChild(heading);
+    fiveDayWeatherBox.appendChild(day1);
+    fiveDayWeatherBox.appendChild(day2);
+    fiveDayWeatherBox.appendChild(day3);
+    fiveDayWeatherBox.appendChild(day4);
+    fiveDayWeatherBox.appendChild(day5);
 }
+
+function createTodayCard(today) {
+
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+
+    var date = month + '-' + day + '-' + year;
+
+    
+
+    console.log(date);
+
+    var dayCard = document.createElement('div');
+    dayCard.classList.add('today-card');
+
+    var todaysDate = document.createElement('div');
+    todaysDate.textContent = date;
+    dayCard.appendChild(todaysDate);
+    
+    var windSpeed = document.createElement('div');
+    windSpeed.textContent = 'Wind Speed: ' + today[0];
+    dayCard.appendChild(windSpeed);
+  
+    var temperature = document.createElement('div');
+    temperature.textContent = 'Temperature: ' + today[1];
+    dayCard.appendChild(temperature);
+  
+    var humidity = document.createElement('div');
+    humidity.textContent = 'Humidity: ' + today[2];
+    dayCard.appendChild(humidity);
+
+    return dayCard;
+    
+}
+
+
+function createDayCard(daily) {
+    var dayCard = document.createElement('div');
+    dayCard.classList.add('five-day-card');
+
+    console.log(daily)
+    
+    var date = document.createElement('div');
+    date.textContent = daily[0];
+    dayCard.appendChild(date);
+
+    var windSpeed = document.createElement('div');
+    windSpeed.textContent = 'Wind Speed: ' + daily[1];
+    dayCard.appendChild(windSpeed);
+  
+    var temperature = document.createElement('div');
+    temperature.textContent = 'Temperature: ' + daily[2];
+    dayCard.appendChild(temperature);
+  
+    var humidity = document.createElement('div');
+    humidity.textContent = 'Humidity: ' + daily[3];
+    dayCard.appendChild(humidity);
+  
+    return dayCard;
+  }
 
 
 function handleSearchFormSubmit(event) {

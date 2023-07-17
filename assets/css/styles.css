@@ -14,3 +14,19 @@
     background-color: yellow;
 }
 
+.five-day-card {
+    background-color: green;
+}
+
+.today-card {
+    background-color: purple;
+}
+
+.flex{
+    display: flex;
+}
+
+.search {
+    display: flex;
+    justify-content: left;
+}
