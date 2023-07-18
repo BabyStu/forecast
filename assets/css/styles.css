@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   .header {
@@ -24,19 +25,21 @@
     padding-left: 1%;
     padding-bottom: 1%;
     padding-top: .5%;
+  }
+
+  .underline {
+    padding-bottom: 1%;
     border-bottom: solid black 1px;
   }
 
   .forecasts {
     display: flex;
     flex-direction: column;
-    /* background-color: blueviolet; */
     width: 80%;
   }
 
   .today {
     font-size: x-large;
-    /* background-color: green; */
   }
 
   .today-card {
@@ -66,4 +69,12 @@
 
   .fiveDayHeader {
     margin-left: 2%;
+  }
+
+  .previousSearches {
+    margin: .5%; 
+  }
+
+  .bold {
+    font-weight: bold;
   }

@@ -60,14 +60,15 @@ function printToday(today){
     var cities = createCityCard(todayWeather[3]);
 
     todayWeatherBox.appendChild(todayCard);
-    recentSearchBox.appendChild()
+    recentSearchBox.appendChild(cities);
 }
 
 function createCityCard(city) {
-    var city = document.createElement('div');
-    city.textContent = city;
+    var cityDiv = document.createElement('div');
+    cityDiv.classList.add('previousSearches');
+    cityDiv.textContent = city;
 
-    return city
+    return cityDiv;
 }
 
 
@@ -152,6 +153,7 @@ function createDayCard(daily) {
     var onlyDate = dateTime.slice(0, 10);
 
     date.textContent = onlyDate;
+    date.classList.add('bold');
     dayCard.appendChild(date);
 
     var windSpeed = document.createElement('p');
