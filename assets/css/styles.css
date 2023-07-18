@@ -1,32 +1,69 @@
-
-
-
-.card {
-    border: 1px solid black;
-    margin: 1rem;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-.dark {
+  .header {
+    text-align: center;
+    background-color: rgb(11, 11, 160);
+    color: antiquewhite;
+    padding: 2%;
+  }
+
+  .bodyContent {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .search {
+    display: flex;
+    flex-direction: column;
+    /* background-color: beige; */
+    width: 20%;
+    padding-left: 1%;
+    padding-bottom: 1%;
+    padding-top: .5%;
+    border-bottom: solid black 1px;
+  }
+
+  .forecasts {
+    display: flex;
+    flex-direction: column;
+    /* background-color: blueviolet; */
+    width: 80%;
+  }
+
+  .today {
+    font-size: x-large;
+    /* background-color: green; */
+  }
+
+  .today-card {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 3%;
+    padding-left: 2%;
+  }
+
+  .five-day-card {
+    display: flex;
     background-color: darkblue;
-}
+    color: white;
+    flex-direction: column;
+    align-content: space-between;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding: 2%;
+    border-radius: 10%;
+  }
 
-.bg-yellow {
-    background-color: yellow;
-}
-
-.five-day-card {
-    background-color: green;
-}
-
-.today-card {
-    background-color: purple;
-}
-
-.flex{
+  .row {
     display: flex;
-}
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-.search {
-    display: flex;
-    justify-content: left;
-}
+  .fiveDayHeader {
+    margin-left: 2%;
+  }

@@ -1,8 +1,10 @@
-// var resultTextEl = document.querySelector('#result-content');
+
 var searchFormEl = document.querySelector('#search-form');
 var searchInputEl = document.querySelector('#search-input');
 var fiveDayWeatherBox = document.querySelector('#five-day-weather');
 var todayWeatherBox = document.querySelector('#today-weather');
+var fiveDayHeaderBox = document.querySelector('#fiveDayHeader');
+var recentSearchBox = document.querySelector('#recentSearch');
 
 let lon;
 let lat;
@@ -10,10 +12,8 @@ let lat;
 function getCoordinates() {
     var locQueryUrl = 'https://api.openweathermap.org/data/2.5/weather?q=';
 
-    var cityName = searchInputEl.value;
-    console.log(cityName)
 
-    locQueryUrl += cityName + '&appid=' + apiKey;
+    locQueryUrl += searchInputEl.value + '&appid=' + apiKey;
 
     fetch(locQueryUrl)
         .then(function (response) {
@@ -53,16 +53,21 @@ function getForecast(coordinates) {
 }
 
 function printToday(today){
-    console.log(today)
 
-    var todayWeather = [today.wind.speed, today.main.temp, today.main.humidity];
+    var todayWeather = [today.wind.speed, today.main.temp, today.main.humidity, today.name];
 
     var todayCard = createTodayCard(todayWeather);
-
-    console.log(todayWeather)
-    
+    var cities = createCityCard(todayWeather[3]);
 
     todayWeatherBox.appendChild(todayCard);
+    recentSearchBox.appendChild()
+}
+
+function createCityCard(city) {
+    var city = document.createElement('div');
+    city.textContent = city;
+
+    return city
 }
 
 
@@ -91,9 +96,10 @@ function printFiveDay(fiveDays) {
     var header = "5 day forecast";
 
     var heading = document.createElement('h2');
+    heading.classList.add('fiveDayHeader');
     heading.textContent = header;
 
-    fiveDayWeatherBox.appendChild(heading);
+    fiveDayHeaderBox.appendChild(heading);
     fiveDayWeatherBox.appendChild(day1);
     fiveDayWeatherBox.appendChild(day2);
     fiveDayWeatherBox.appendChild(day3);
@@ -110,27 +116,24 @@ function createTodayCard(today) {
 
     var date = month + '-' + day + '-' + year;
 
-    
-
-    console.log(date);
-
     var dayCard = document.createElement('div');
     dayCard.classList.add('today-card');
 
-    var todaysDate = document.createElement('div');
-    todaysDate.textContent = date;
-    dayCard.appendChild(todaysDate);
+
+    var cityDate = document.createElement('h2');
+    cityDate.textContent = today[3] + '  ' + date;
+    dayCard.appendChild(cityDate);
     
     var windSpeed = document.createElement('div');
-    windSpeed.textContent = 'Wind Speed: ' + today[0];
+    windSpeed.textContent = 'Wind Speed: ' + today[0] + ' MPH';
     dayCard.appendChild(windSpeed);
   
     var temperature = document.createElement('div');
-    temperature.textContent = 'Temperature: ' + today[1];
+    temperature.textContent = 'Temperature: ' + ((today[1] - 273.15)*9/5+32).toFixed(1) + ' F';
     dayCard.appendChild(temperature);
   
     var humidity = document.createElement('div');
-    humidity.textContent = 'Humidity: ' + today[2];
+    humidity.textContent = 'Humidity: ' + today[2] + '%';
     dayCard.appendChild(humidity);
 
     return dayCard;
@@ -144,28 +147,37 @@ function createDayCard(daily) {
 
     console.log(daily)
     
-    var date = document.createElement('div');
-    date.textContent = daily[0];
+    var date = document.createElement('p');
+    var dateTime = daily[0];
+    var onlyDate = dateTime.slice(0, 10);
+
+    date.textContent = onlyDate;
     dayCard.appendChild(date);
 
-    var windSpeed = document.createElement('div');
-    windSpeed.textContent = 'Wind Speed: ' + daily[1];
+    var windSpeed = document.createElement('p');
+    windSpeed.textContent = 'Wind Speed: ' + daily[1] + ' MPH';
     dayCard.appendChild(windSpeed);
   
-    var temperature = document.createElement('div');
-    temperature.textContent = 'Temperature: ' + daily[2];
+    var temperature = document.createElement('p');
+    temperature.textContent = 'Temperature: ' + ((daily[2]- 273.15)*9/5+32).toFixed(1) + ' F';
     dayCard.appendChild(temperature);
   
-    var humidity = document.createElement('div');
-    humidity.textContent = 'Humidity: ' + daily[3];
+    var humidity = document.createElement('p');
+    humidity.textContent = 'Humidity: ' + daily[3] + '%';
     dayCard.appendChild(humidity);
   
     return dayCard;
   }
 
+  function clear() {
+    fiveDayHeaderBox.innerHTML = '';
+    fiveDayWeatherBox.innerHTML = '';
+    todayWeatherBox.innerHTML = '';
+  }
 
 function handleSearchFormSubmit(event) {
     event.preventDefault();
+
 
     var searchInputVal = document.querySelector('#search-input').value;
 
@@ -174,15 +186,16 @@ function handleSearchFormSubmit(event) {
         return;
     }
 
+    clear();
     getCoordinates(getForecast);
-
 }
+
+
 
 const apiKey = '8e079de333c4c9144eb19dab7ab32eac';
 
 searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 
 
-// http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid=8e079de333c4c9144eb19dab7ab32eac
 
 // https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=8e079de333c4c9144eb19dab7ab32eac

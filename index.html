@@ -7,24 +7,26 @@
     <title>Forecast</title>
   </head>
   <body>
-    <header>
+    <header class="header">
       <h1>Weather Dashboard</h1>
     </header>
-    <div class ="flex">
+    <div class="bodyContent">
       <div class="search">
         <h3>Search for a City:</h3>
         <form id="search-form">
           <input id="search-input" type="text" />
           <button type="submit">Search</button>
         </form>
+        <div id="recentSearch"></div>
       </div>
-      <div>
-        <div>
+      <div class="forecasts">
+        <div class="today">
             <div id="today-weather"></div>
         </div>
 
-        <div>
-            <div id="five-day-weather"></div>
+        <div class="five-day">
+            <div id="fiveDayHeader"></div>
+            <div id="five-day-weather" class="row"></div>
         </div>
         </div>
     </div>
